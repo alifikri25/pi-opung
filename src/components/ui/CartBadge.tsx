@@ -11,7 +11,7 @@ export function CartBadgeNav() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <Link href="/cart" className="relative p-2">
+    <Link href="/cart" className="relative p-2" aria-label={`Keranjang belanja${totalItems > 0 ? ` (${totalItems} item)` : ''}`}>
       <IconShoppingCart size={24} />
       {mounted && totalItems > 0 && (
         <span className="absolute top-0 right-0 bg-accent text-primary-foreground text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-fade-in">

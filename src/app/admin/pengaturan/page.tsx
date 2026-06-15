@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { IconDeviceFloppy } from '@tabler/icons-react';
 import { getSettings, updateSetting } from '@/lib/api';
 import { useToast } from '@/components/ui/Toast';
@@ -11,6 +12,8 @@ export default function AdminPengaturan() {
     wa_number: '',
     address: '',
     operating_hours: '',
+    store_lat: '',
+    store_lng: '',
     shipping_fee_flat: '',
   });
   const [loading, setLoading] = useState(true);
@@ -29,6 +32,8 @@ export default function AdminPengaturan() {
         wa_number: data.wa_number ?? '',
         address: data.address ?? '',
         operating_hours: data.operating_hours ?? '',
+        store_lat: data.store_lat ?? '-6.2088',
+        store_lng: data.store_lng ?? '106.8456',
         shipping_fee_flat: data.shipping_fee_flat ?? '15000',
       });
     } catch (err) {
@@ -96,14 +101,21 @@ export default function AdminPengaturan() {
             <label className="block text-sm font-medium text-foreground mb-1">Jam Operasional</label>
             <input name="operating_hours" value={settings.operating_hours} onChange={handleChange} type="text" className="w-full py-2.5 px-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Latitude Toko</label>
+              <input name="store_lat" value={settings.store_lat} onChange={handleChange} type="text" className="w-full py-2.5 px-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="-6.2088" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Longitude Toko</label>
+              <input name="store_lng" value={settings.store_lng} onChange={handleChange} type="text" className="w-full py-2.5 px-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="106.8456" />
+            </div>
+          </div>
         </div>
 
         <div className="bg-background rounded-xl border border-border p-6 shadow-sm space-y-5">
           <h2 className="font-bold text-lg text-foreground border-b border-border pb-3">Pengiriman</h2>
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Ongkos Kirim Flat (Rp)</label>
-            <input name="shipping_fee_flat" value={settings.shipping_fee_flat} onChange={handleChange} type="number" className="w-full py-2.5 px-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
-          </div>
+          <p className="text-sm text-foreground/60">Kelola zona ongkir di menu <Link href="/admin/ongkir" className="text-primary hover:underline">Ongkir</Link></p>
         </div>
 
         <button 

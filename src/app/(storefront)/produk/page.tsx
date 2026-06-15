@@ -1,10 +1,16 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { IconLeaf, IconSearch, IconAlertCircle } from "@tabler/icons-react";
 import { getProducts, getCategories } from "@/lib/api";
 import type { ProductWithCategory, Category } from "@/types";
 
-export const revalidate = 60; // ISR cache 60s
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Semua Produk - PI opung",
+  description: "Lihat semua produk pisang segar kami. Berbagai jenis pisang berkualitas dengan harga terbaik.",
+}; // ISR cache 60s
 
 export default async function ProductsPage(
   props: {

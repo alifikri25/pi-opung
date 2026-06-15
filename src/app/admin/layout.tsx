@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { IconDashboard, IconBox, IconShoppingCart, IconSettings, IconLogout } from '@tabler/icons-react';
+import { IconDashboard, IconBox, IconShoppingCart, IconTruck, IconSettings, IconLogout } from '@tabler/icons-react';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminLayout({
@@ -73,6 +73,9 @@ export default function AdminLayout({
           </Link>
           <Link href="/admin/pesanan" className="flex items-center gap-3 px-3 py-2 rounded-lg text-foreground hover:bg-muted transition-colors">
             <IconShoppingCart size={20} /> Pesanan
+          </Link>
+          <Link href="/admin/ongkir" className="flex items-center gap-3 px-3 py-2 rounded-lg text-foreground hover:bg-muted transition-colors">
+            <IconTruck size={20} /> Ongkir
           </Link>
           <Link href="/admin/pengaturan" className="flex items-center gap-3 px-3 py-2 rounded-lg text-foreground hover:bg-muted transition-colors">
             <IconSettings size={20} /> Pengaturan

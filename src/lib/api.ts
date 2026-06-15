@@ -24,10 +24,10 @@ export async function getProductById(id: string): Promise<ProductWithCategory | 
     .select('*, categories(name, slug)')
     .eq('id', id)
     .eq('is_active', true)
-    .single();
+    .maybeSingle();
 
-  if (error) return null;
-  return data as ProductWithCategory;
+  if (error) throw error;
+  return data as ProductWithCategory | null;
 }
 
 /** Fetch featured products (latest N) */
@@ -239,6 +239,95 @@ export async function uploadImage(file: File): Promise<string> {
     .getPublicUrl(data.path);
 
   return urlData.publicUrl;
+}
+
+// ========================
+// SHIPPING ZONES
+// ========================
+
+export interface ShippingZone {
+  id: string;
+  zone_name: string;
+  districts: string[];
+  fee: number;
+  estimated_days: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export async function getShippingZones(): Promise<ShippingZone[]> {
+  const { data, error } = await supabase
+    .from('shipping_zones')
+    .select('*')
+    .eq('is_active', true)
+    .order('fee');
+
+  if (error) throw error;
+  return (data ?? []) as ShippingZone[];
+}
+
+export async function getAllShippingZones(): Promise<ShippingZone[]> {
+  const { data, error } = await supabase
+    .from('shipping_zones')
+    .select('*')
+    .order('fee');
+
+  if (error) throw error;
+  return (data ?? []) as ShippingZone[];
+}
+
+export async function createShippingZone(zone: {
+  zone_name: string;
+  districts: string[];
+  fee: number;
+  estimated_days: string;
+}) {
+  const { data, error } = await supabase
+    .from('shipping_zones')
+    .insert(zone)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function updateShippingZone(id: string, updates: Partial<{
+  zone_name: string;
+  districts: string[];
+  fee: number;
+  estimated_days: string;
+  is_active: boolean;
+}>) {
+  const { data, error } = await supabase
+    .from('shipping_zones')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteShippingZone(id: string) {
+  const { error } = await supabase
+    .from('shipping_zones')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+export async function findShippingZone(district: string): Promise<ShippingZone | null> {
+  const { data, error } = await supabase
+    .from('shipping_zones')
+    .select('*')
+    .eq('is_active', true)
+    .contains('districts', [district]);
+
+  if (error) throw error;
+  return (data?.[0] ?? null) as ShippingZone | null;
 }
 
 // ========================

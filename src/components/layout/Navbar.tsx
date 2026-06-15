@@ -15,7 +15,7 @@ export default function Navbar() {
             placeholder="Cari pisang segar..." 
             className="w-full py-2 px-4 rounded-full text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
           />
-          <button className="absolute right-3 top-2 text-foreground/50">
+          <button className="absolute right-3 top-2 text-foreground/50" aria-label="Cari">
             <IconSearch size={20} />
           </button>
         </div>
@@ -31,7 +31,7 @@ export default function Navbar() {
             placeholder="Cari pisang segar..." 
             className="w-full py-2 px-4 rounded-full text-foreground focus:outline-none"
           />
-          <button className="absolute right-3 top-2 text-foreground/50">
+          <button className="absolute right-3 top-2 text-foreground/50" aria-label="Cari">
             <IconSearch size={20} />
           </button>
         </div>

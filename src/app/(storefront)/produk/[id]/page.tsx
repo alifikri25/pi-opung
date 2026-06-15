@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { IconArrowLeft, IconLeaf } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -5,7 +6,26 @@ import { getProductById, getSettings } from '@/lib/api';
 import AddToCartButton from '@/components/ui/AddToCartButton';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 60; // ISR
+export const revalidate = 60;
+
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  try {
+    const product = await getProductById(params.id);
+    if (!product) return { title: 'Produk Tidak Ditemukan - PI opung' };
+    return {
+      title: `${product.name} - PI opung`,
+      description: product.description || `Beli ${product.name} segar di PI opung. Harga Rp ${product.price.toLocaleString('id-ID')}.`,
+      openGraph: {
+        title: `${product.name} - PI opung`,
+        description: product.description || `Beli ${product.name} segar.`,
+        images: product.images?.[0] ? [{ url: product.images[0] }] : [],
+      },
+    };
+  } catch {
+    return { title: 'Produk Tidak Ditemukan - PI opung' };
+  }
+}
 
 export default async function ProductDetail(
   props: {

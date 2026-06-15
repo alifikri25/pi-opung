@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { IconArrowRight, IconBrandWhatsapp, IconLeaf } from "@tabler/icons-react";
@@ -5,6 +6,15 @@ import { getCategories, getFeaturedProducts, getSettings } from "@/lib/api";
 import type { Category, ProductWithCategory } from "@/types";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "PI opung - Toko Pisang Segar",
+  description: "Toko online pisang segar terlengkap. Belanja berbagai macam pisang berkualitas langsung dari kebun, dikirim ke rumah Anda.",
+  openGraph: {
+    title: "PI opung - Toko Pisang Segar",
+    description: "Toko online pisang segar terlengkap.",
+  },
+};
 
 export default async function Home() {
   let categories: Category[] = [];
@@ -20,8 +30,8 @@ export default async function Home() {
     categories = cats;
     products = prods;
     if (settings.wa_number) waNumber = settings.wa_number;
-  } catch {
-    // Supabase belum siap — tampilkan halaman dengan empty state
+  } catch (err) {
+    console.error('Gagal memuat data home:', err);
   }
 
   return (
